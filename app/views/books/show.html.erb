@@ -1,0 +1,5 @@
+<h1><%= @book['title'] %></h1>
+<p><strong>Author:</strong> <%= @book['authors'].map { |a| a['name'] }.join(', ') %></p>
+
+<h2>Book Content:</h2>
+<pre style="white-space: pre-wrap;"><%= @content %></pre>
