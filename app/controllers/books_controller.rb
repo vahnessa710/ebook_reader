@@ -7,18 +7,12 @@ class BooksController < ApplicationController
 
     def show
         @book = Book.find(params[:id])
-        @progress = @book.progress_percentage(current_user)
-        @current_location = @book.current_location
-        # @last_read_at = @book.last_read_at(current_user)
-        # if user_signed_in?
-        # @progress = current_user.reading_progresses.find_by(book: @book)
-        #     if @progress&.current_chapter
-        #         redirect_to book_chapter_path(@book, @progress.current_chapter)
-        #         return
-        #     end
-        # end
-        
-        # redirect_to book_chapter_path(@book, @book.chapters.first)
+        @progress = current_user.reading_progresses.find_by(book: @book)
+            # Find the chapter to resume (either by progress or first chapter)
+            if @progress&.current_location.present?
+                @resume_chapter = @book.chapters.find_by(position: @progress.current_location)
+            end
+        @current_chapter = @resume_chapter || @book.chapters.order(:position).first
     end
     
     def search_form; end
@@ -61,7 +55,6 @@ class BooksController < ApplicationController
         end
     end
 
-    # app/controllers/books_controller.rb
     def download
         book = Book.find(params[:id])
         # Fetch the file from the external URL
@@ -83,5 +76,10 @@ class BooksController < ApplicationController
         return nil unless download_url
         response = HTTParty.get(download_url)
         response.success? ? response.body : nil
+    end
+
+    def set_current_location(current_location)
+         @chapter = @book.chapters.all
+         @current_location = current_location
     end
 end

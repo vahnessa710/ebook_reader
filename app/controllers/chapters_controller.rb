@@ -1,11 +1,10 @@
 class ChaptersController < ApplicationController
-  before_action :authenticate_user!, only: [:show]
-
+  before_action
   def show
     @book = Book.find(params[:book_id])
     @chapter = @book.chapters.find(params[:id])
-
     # Calculate progress metrics
+    
     total_chapters = @book.chapters.count #total chapters of the book
 
     @progress = current_user.reading_progresses.find_by(book: @book)
