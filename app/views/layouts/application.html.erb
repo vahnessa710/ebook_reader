@@ -25,8 +25,115 @@
   </head>
 
   <body>
-    <main class="p-5">
-      <%= yield %>
-    </main>
+    <div>
+      <!-- New Settings Sidebar - Wrapped in conditional -->
+      <% if user_signed_in? %>
+        <div class="w-64 fixed inset-y-0 left-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col p-5">
+          <h2 class="font-bold text-lg mb-4 text-gray-700 dark:text-gray-200">Reading Settings</h2>
+        
+      <!-- Theme Selector -->
+      <div class="mb-6">
+        <h3 class="text-sm font-medium mb-2 text-gray-600 dark:text-gray-400">Theme</h3>
+        <div class="flex space-x-2">
+          <%= button_tag "Light", 
+              class: "theme-toggle px-3 py-1 rounded text-sm",
+              data: { theme: "light" } %>
+          <%= button_tag "Dark", 
+              class: "theme-toggle px-3 py-1 rounded text-sm #{current_user.theme == 'dark' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}",
+              data: { theme: "dark" } %>
+        </div>
+      </div>
+    
+      <!-- Typography -->
+      <div class="mb-6">
+        <h3 class="text-sm font-medium mb-2 text-gray-600 dark:text-gray-400">Typography</h3>
+        <select id="font-selector" class="w-full p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm">
+          <option value="sans">Sans-serif (Modern)</option>
+          <option value="serif">Serif (Traditional)</option>
+          <option value="mono">Monospace (Code)</option>
+        </select>
+        <div class="mt-2 flex items-center">
+          <span class="text-sm text-gray-500 dark:text-gray-400 mr-2">Size</span>
+          <input type="range" id="font-size" min="12" max="24" value="16" class="w-full">
+        </div>
+      </div>
+      
+      <!-- Dictionary -->
+      <div class="mb-6">
+        <h3 class="text-sm font-medium mb-2 text-gray-600 dark:text-gray-400">Dictionary</h3>
+        <select id="dictionary-selector" class="w-full p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm">
+          <option value="english">English</option>
+          <option value="spanish">Spanish</option>
+          <option value="french">French</option>
+        </select>
+        <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+          Double-click words to look up definitions
+        </div>
+      </div>
+      
+      <!-- Save Settings Button -->
+      <button id="save-settings" class="mt-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm transition">
+        Save Settings
+      </button>
+    </div>
+    <% end %>
+    <div class="flex-1 pl-64"> <!-- padding-left matches sidebar width -->
+      <div class="h-full overflow-y-auto">
+        <%= yield %>
+      </div>
+    </div>
+    </div>
   </body>
 </html>
+
+<!-- JavaScript for Settings -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Theme Toggle
+  document.querySelectorAll('.theme-toggle').forEach(button => {
+    button.addEventListener('click', function() {
+      const theme = this.dataset.theme;
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      localStorage.setItem('theme', theme);
+    });
+  });
+
+  // Font Selector
+  const fontSelector = document.getElementById('font-selector');
+  fontSelector.addEventListener('change', function() {
+    document.body.style.fontFamily = this.value === 'serif' ? 'Georgia, serif' : 
+                                    this.value === 'mono' ? 'Courier, monospace' : 
+                                    'system-ui, sans-serif';
+  });
+
+  // Font Size
+  const fontSize = document.getElementById('font-size');
+  fontSize.addEventListener('input', function() {
+    document.documentElement.style.fontSize = `${this.value}px`;
+  });
+
+  // Dictionary Selector
+  document.getElementById('dictionary-selector').addEventListener('change', function() {
+    console.log(`Dictionary set to: ${this.value}`);
+  });
+
+  // Save Settings
+  document.getElementById('save-settings').addEventListener('click', function() {
+    // Implement settings save logic (AJAX call to backend)
+    alert('Settings saved!');
+  });
+
+  // Double-click word lookup
+  document.addEventListener('dblclick', function(e) {
+    if (e.target.tagName === 'P' || e.target.tagName === 'SPAN' || e.target.tagName === 'DIV') {
+      const word = window.getSelection().toString().trim();
+      if (word.length > 0) {
+        const dict = document.getElementById('dictionary-selector').value;
+        console.log(`Looking up "${word}" in ${dict} dictionary`);
+        // Implement actual dictionary API call here
+       const response = WebsterApi.get_definition(word)
+      }
+    }
+  });
+});
+</script>

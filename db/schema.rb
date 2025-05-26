@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_22_190339) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_25_115513) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,15 +23,32 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_22_190339) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "content"
+    t.text "cover_url"
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_books_on_user_id"
+  end
+
+  create_table "chapters", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.integer "position"
+    t.bigint "book_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_chapters_on_book_id"
   end
 
   create_table "reading_progresses", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "book_id", null: false
-    t.string "current_location"
+    t.integer "current_location", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "chapter_id", null: false
+    t.float "progress_percentage", default: 0.0
+    t.datetime "last_read_at"
     t.index ["book_id"], name: "index_reading_progresses_on_book_id"
+    t.index ["chapter_id"], name: "index_reading_progresses_on_chapter_id"
     t.index ["user_id"], name: "index_reading_progresses_on_user_id"
   end
 
@@ -58,7 +75,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_22_190339) do
     t.index ["user_id"], name: "index_vocabularies_on_user_id"
   end
 
+  add_foreign_key "books", "users"
+  add_foreign_key "chapters", "books"
   add_foreign_key "reading_progresses", "books"
+  add_foreign_key "reading_progresses", "chapters"
   add_foreign_key "reading_progresses", "users"
   add_foreign_key "vocabularies", "users"
 end
