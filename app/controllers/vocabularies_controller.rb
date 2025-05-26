@@ -5,4 +5,5 @@ class VocabulariesController < ApplicationController
         @word = "computer"
         @definition = WebsterApi.get_definition(@word)
     end
+    
 end
