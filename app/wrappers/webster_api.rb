@@ -12,15 +12,15 @@ class WebsterApi
   end
 
   def self.get_definition(word)
-  word_data = self.get_word(word)
+    word_data = self.get_word(word)
 
-  # Check if the response is a valid array of word entries
-  if word_data
-    definition = word_data.first["shortdef"].join("; ")
-    return definition if definition
+    # Check if the response is a valid array of word entries
+    if word_data
+      definition = word_data.first["shortdef"].join("; ")
+      return definition if definition
+    end
+
+    "Definition not available"
   end
-
-  "Definition not available"
-end
 
 end
