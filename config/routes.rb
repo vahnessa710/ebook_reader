@@ -4,8 +4,11 @@ Rails.application.routes.draw do
   resources :books, only: [:index, :show, :create, :destroy] do
     get 'download', on: :member
     resources :reading_progress, only: [:show, :create, :update]
-    resources :chapters, only: [:show]
-    
+    resources :chapters, only: [:show] do
+      member do
+        post :update_progress
+      end
+    end
     collection do
       get :search_form    # GET /books/search_form (search form page)
       get :search        # POST /books/search (submits ID to fetch/save book)
