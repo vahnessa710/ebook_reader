@@ -55,6 +55,12 @@ class BooksController < ApplicationController
         end
     end
 
+    def destroy
+        @book = current_user.books.find(params[:id])
+        @book.destroy
+        redirect_to books_path, notice: "Book was successfully removed from your library."
+    end
+
     def download
         book = Book.find(params[:id])
         # Fetch the file from the external URL
