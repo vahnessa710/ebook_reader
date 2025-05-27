@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resources :books, only: [:index, :show, :create] do
+  resources :books, only: [:index, :show, :create, :destroy] do
     get 'download', on: :member
     resources :reading_progress, only: [:show, :create, :update]
     resources :chapters, only: [:show]

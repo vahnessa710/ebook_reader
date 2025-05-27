@@ -1,5 +1,5 @@
 class ChaptersController < ApplicationController
-  before_action
+  
   def show
     @book = Book.find(params[:book_id])
     @chapter = @book.chapters.find(params[:id])
@@ -9,11 +9,13 @@ class ChaptersController < ApplicationController
 
     @progress = current_user.reading_progresses.find_by(book: @book)
     
-    #Update reading progress (both chapter position and percentage)
+    # Only update progress if coming from chapter list navigation
+    if params[:from_navigation]
       update_reading_progress(
-        chapter_position:  @chapter.position,
+        chapter_position: @chapter.position,
         progress_percentage: @chapter.progress_percentage
       )
+    end
 
     @previous_chapter = @chapter.previous_chapter
     @next_chapter = @chapter.next_chapter

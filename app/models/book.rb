@@ -1,7 +1,7 @@
 class Book < ApplicationRecord
     belongs_to :user
     has_many :reading_progresses
-    has_many :chapters
+    has_many :chapters, dependent: :destroy
     after_create :fetch_content_and_parse_chapters
 
      # Calculate progress percentage (0-100)

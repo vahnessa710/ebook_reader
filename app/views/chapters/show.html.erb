@@ -30,7 +30,7 @@
     <!-- Chapter List -->
     <nav class="flex-1 space-y-1 overflow-y-auto">
       <% @book.chapters.each do |chap| %>
-        <%= link_to book_chapter_path(@book, chap), 
+        <%= link_to book_chapter_path(@book, chap, from_navigation: true), 
             class: "flex items-center px-3 py-2.5 text-sm rounded-lg transition-all #{chap == @chapter ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:bg-gray-100'}" do %>
           <% if chap == @chapter %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
