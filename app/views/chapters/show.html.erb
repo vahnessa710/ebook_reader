@@ -1,6 +1,9 @@
 <div class="flex h-screen bg-gray-50">
   <!-- Sidebar Navigation -->
-  <div class="w-72 bg-white border-r border-gray-200 p-6 overflow-y-auto flex flex-col">
+  <div class="w-72 bg-white border-r border-gray-200 p-6 overflow-y-auto flex flex-col"
+       data-controller="sidebar-scroll"
+       data-sidebar-scroll-current-chapter-id-value="<%= @chapter.id %>"
+       data-sidebar-scroll-restore-scroll-value="<%= params[:from_navigation] == 'true' %>">
     <!-- Book Header -->
     <div class="mb-6 pb-6 border-b border-gray-100">
       <div class="flex items-center space-x-3 mb-3">
@@ -28,16 +31,20 @@
     </div>
     
     <!-- Chapter List -->
-    <nav class="flex-1 space-y-1 overflow-y-auto">
-      <% @book.chapters.each do |chap| %>
-        <%= link_to book_chapter_path(@book, chap, from_navigation: true), 
-            class: "flex items-center px-3 py-2.5 text-sm rounded-lg transition-all #{chap == @chapter ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:bg-gray-100'}" do %>
-          <% if chap == @chapter %>
+    <nav class="flex-1 space-y-1 overflow-y-auto" data-sidebar-scroll-target="nav">
+      <% @book.chapters.each do |chapter| %>
+        <%= link_to book_chapter_path(@book, chapter, from_navigation: true), 
+            class: "flex items-center px-3 py-2.5 text-sm rounded-lg transition-all #{chapter == @chapter ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:bg-gray-100'}",
+            data: { 
+              "sidebar-scroll-target": "link",
+              "chapter-id": chapter.id
+            } do %>
+          <% if chapter == @chapter %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
             </svg>
           <% end %>
-          <span class="truncate"><%= chap.title %></span>
+          <span class="truncate"><%= chapter.title %></span>
         <% end %>
       <% end %>
     </nav>
