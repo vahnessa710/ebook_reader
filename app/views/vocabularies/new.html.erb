@@ -1,0 +1,9 @@
+<%= form_with model: Word.new, url: words_path do |f| %>
+  <%= f.label :word %>
+  <%= f.text_field :word %>
+
+  <%= f.label :meaning %>
+  <%= f.text_area :meaning %>
+
+  <%= f.submit 'Save Word' %>
+<% end %>

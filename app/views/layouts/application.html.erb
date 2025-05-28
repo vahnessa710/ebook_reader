@@ -2,6 +2,7 @@
 <html>
   <head>
     <title><%= content_for(:title) || "Ebook Project" %></title>
+    <meta name="csrf-token" content="<%= csrf_meta_tags %>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -79,6 +80,7 @@
     <% end %>
     <div class="flex-1 pl-64"> <!-- padding-left matches sidebar width -->
       <div class="h-full overflow-y-auto">
+        
         <%= yield %>
       </div>
     </div>

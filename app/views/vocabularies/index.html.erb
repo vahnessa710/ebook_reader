@@ -1,4 +1,36 @@
+
+
+ <div class="flex items-center space-x-4">
+        
+        <%= link_to search_form_vocabularies_path, class: "p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow transition block" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        <% end %>
+        <button class="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+        </button>
+      </div>
+
+
   <div id="dictionary-results" class="mt-2 p-3 rounded-lg bg-gray-50 dark:bg-gray-700 text-sm">
     <h4 class="font-medium text-indigo-600 dark:text-purple-400 mb-1"><%= @word %></h4>
     <p class="text-gray-700 dark:text-gray-300"><%= @definition %></p>
   </div>
+
+
+<h1>My Saved Words</h1>
+
+<% if @vocabularies.any? %>
+  <ul>
+    <% @vocabularies.each do |vocabulary| %>
+      <li>
+        <strong><%= vocabulary.word %></strong>: <%= vocabulary.definition %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>You haven't saved any words yet.</p>
+<% end %>

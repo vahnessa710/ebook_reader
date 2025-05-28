@@ -1,0 +1,20 @@
+<h1>Definition of "<%= @word %>"</h1>
+
+<% if @definitions.any? %>
+  <ul>
+    <% @definitions.each do |definition| %>
+      <li><%= definition %></li>
+    <% end %>
+  </ul>
+
+  <%= form_with url: vocabularies_path, method: :post, local: true do |f| %>
+    <%= hidden_field_tag :word, @word %>
+    <%= hidden_field_tag :definition, @definitions.first %> <%# Save the first definition %>
+    <%= f.submit "Save to My Vocabulary", style: "background-color: red; color: white; border: none; padding: 8px 12px; border-radius: 4px;" %>
+
+  <% end %>
+<% else %>
+  <p>No definitions found.</p>
+<% end %>
+
+<%= link_to "Back to Search", search_form_vocabularies_path %>

@@ -12,7 +12,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :vocabularies, only: [:index, :create]
+  resources :vocabularies,param: :word, only: [:index, :create, :show] do
+
+   collection do
+      get :search_form    # GET /vocabularies/search_form (search form page)
+      get :search        # POST /vocabularies/search (submits ID to fetch/save book)
+      post :search
+    end
+  end
+  
 
   get "up" => "rails/health#show", as: :rails_health_check
 
