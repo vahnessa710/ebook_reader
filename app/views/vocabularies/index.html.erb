@@ -1,6 +1,13 @@
-
-
- <div class="flex items-center space-x-4">
+<div class="flex h-screen bg-gray-50 dark:bg-gray-900">
+  <!-- Main Content -->
+  <div class="flex-1 overflow-y-auto p-6 sm:p-8">
+    <!-- Header -->
+    <div class="mb-8 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">My Saved Words</h1>
+              
+          <p class="text-gray-500 dark:text-gray-400">Your personal collection of words</p>
+      </div> 
         
         <%= link_to search_form_vocabularies_path, class: "p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow transition block" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -14,23 +21,42 @@
         </button>
       </div>
 
-
+  
   <div id="dictionary-results" class="mt-2 p-3 rounded-lg bg-gray-50 dark:bg-gray-700 text-sm">
-    <h4 class="font-medium text-indigo-600 dark:text-purple-400 mb-1"><%= @word %></h4>
-    <p class="text-gray-700 dark:text-gray-300"><%= @definition %></p>
-  </div>
 
 
-<h1>My Saved Words</h1>
-
-<% if @vocabularies.any? %>
+ <% if @vocabularies.any? %> 
   <ul>
     <% @vocabularies.each do |vocabulary| %>
       <li>
-        <strong><%= vocabulary.word %></strong>: <%= vocabulary.definition %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>You haven't saved any words yet.</p>
-<% end %>
+        <h4 class="font-medium text-indigo-600 dark:text-purple-400 mb-1 flex items-center">
+          <%= vocabulary.word %>
+          <button 
+            type="button" 
+            class="ml-2 p-1 rounded bg-indigo-500 text-white hover:bg-indigo-600" 
+            onclick="speakWord('<%= j vocabulary.word %>')"
+            aria-label="Read word aloud"
+          >
+            🔊
+          </button>
+        </h4>
+        
+          <div class="flex justify-between items-center">
+          <p class="text-gray-700 dark:text-gray-300 flex-grow">
+             
+          <%= vocabulary.definition %>
+          </p>
+          <%= button_to vocabulary_path(vocabulary), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-500 hover:text-red-700 ml-4" do %>
+          <i class="fas fa-trash text-2xl" style="color: #ef4444;"></i>
+          <% end %>
+</div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>You haven't saved any words yet.</p>
+  <% end %>
+</div>
+
+
+

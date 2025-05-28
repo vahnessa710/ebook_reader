@@ -20,12 +20,24 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-   
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <script>
+    function speakWord(word) {
+      if (!('speechSynthesis' in window)) {
+        alert('Text-to-Speech not supported on your browser.');
+        return;
+      }
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = 'en-US'; // Optional: set language
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+
     <div>
       <!-- New Settings Sidebar - Wrapped in conditional -->
       <% if user_signed_in? %>
@@ -73,6 +85,7 @@
       </div>
     
       <!-- Save Settings Button -->
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-light", style: "color: white;" %>
       <button id="save-settings" class="mt-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm transition">
         Save Settings
       </button>
@@ -80,6 +93,7 @@
     <% end %>
     <div class="flex-1 pl-64"> <!-- padding-left matches sidebar width -->
       <div class="h-full overflow-y-auto">
+        
         
         <%= yield %>
       </div>

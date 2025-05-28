@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :vocabularies,param: :word, only: [:index, :create, :show] do
+  resources :vocabularies do
 
    collection do
       get :search_form    # GET /vocabularies/search_form (search form page)

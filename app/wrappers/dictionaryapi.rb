@@ -3,7 +3,6 @@ require 'json'
 require 'uri'
 require 'httparty'
 
-
 class Dictionaryapi
   include HTTParty
   base_uri 'https://api.dictionaryapi.dev/api/v2/entries/en'
@@ -12,4 +11,3 @@ class Dictionaryapi
     get("/#{word}")
   end
 end
-
