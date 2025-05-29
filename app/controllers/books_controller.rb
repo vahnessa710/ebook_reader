@@ -31,6 +31,12 @@ class BooksController < ApplicationController
 
     def create
         gutendex_id = params.dig(:book, :gutendex_id)
+        
+        # Check if book already exists in user's library
+        if current_user.books.exists?(gutendex_id: gutendex_id)
+            redirect_to search_form_books_path, alert: "Book is already in your library"
+            return
+        end
 
         response = GutendexApi.get_book_by_id(gutendex_id)
 
@@ -40,14 +46,15 @@ class BooksController < ApplicationController
             cover_url = book_data.dig("formats", "image/jpeg")
             content = fetch_book_content(download_url)
 
-            book = current_user.books.find_or_create_by!(gutendex_id: gutendex_id) do |book|
-            book.title = book_data["title"]
-            book.author = book_data["authors"]&.map { |a| a["name"] }&.join(", ")
-            book.description = book_data["summaries"]&.first
-            book.download_url = download_url
-            book.content = content
-            book.cover_url = cover_url
-            end
+            book = current_user.books.create!(
+            gutendex_id: gutendex_id,
+            title: book_data["title"],
+            author: book_data["authors"]&.map { |a| a["name"] }&.join(", "),
+            description: book_data["summaries"]&.first,
+            download_url: download_url,
+            content: content,
+            cover_url: cover_url
+            )
 
             redirect_to books_path, notice: "Book added to your library!"
         else
