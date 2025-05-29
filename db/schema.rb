@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_25_115513) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_28_145157) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -38,6 +38,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_25_115513) do
     t.index ["book_id"], name: "index_chapters_on_book_id"
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
   create_table "reading_progresses", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "book_id", null: false
@@ -62,6 +71,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_25_115513) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "confirmed_at"
+    t.string "confirmation_token"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -77,6 +90,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_25_115513) do
 
   add_foreign_key "books", "users"
   add_foreign_key "chapters", "books"
+  add_foreign_key "notes", "users"
   add_foreign_key "reading_progresses", "books"
   add_foreign_key "reading_progresses", "chapters"
   add_foreign_key "reading_progresses", "users"

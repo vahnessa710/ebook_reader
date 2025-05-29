@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
     before_action :authenticate_user!
+    rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
     def index
         @books = current_user.books.all
@@ -90,6 +91,13 @@ class BooksController < ApplicationController
         response = HTTParty.get(download_url)
         response.success? ? response.body : nil
     end
+    
+  private
+
+  def record_not_found
+    redirect_to root_path, alert: "That record doesn't exist!"
+  end
+
 
     def set_current_location(current_location)
          @chapter = @book.chapters.all

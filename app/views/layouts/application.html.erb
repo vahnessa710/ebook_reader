@@ -2,6 +2,7 @@
 <html>
   <head>
     <title><%= content_for(:title) || "Ebook Project" %></title>
+    <meta name="csrf-token" content="<%= csrf_meta_tags %>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -19,12 +20,54 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-   
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <%# <script>
+    function speakWord(word) {
+      if (!('speechSynthesis' in window)) {
+        alert('Text-to-Speech not supported on your browser.');
+        return;
+      }
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = 'en-US'; // Optional: set language
+      speechSynthesis.speak(utterance);
+    }
+  </script> %>
+
+    <script>
+  function speakWord(word) {
+    if (!('speechSynthesis' in window)) {
+      alert('Text-to-Speech not supported on your browser.');
+      return;
+    }
+
+    const synth = window.speechSynthesis;
+    const voices = synth.getVoices();
+
+    // Try to find a Korean voice
+    const koreanVoice = voices.find(voice => voice.lang === 'ko-KR');
+
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = 'ko-KR'; // Set Korean language code
+
+    if (koreanVoice) {
+      utterance.voice = koreanVoice;
+    }
+
+    synth.speak(utterance);
+  }
+
+  // Required to properly load voices in some browsers (like Chrome)
+  window.speechSynthesis.onvoiceschanged = () => {
+    window.speechSynthesis.getVoices();
+  };
+</script>
+
+
     <% flash.each do |type, message| %>
   <% alert_class = case type.to_sym
                    when :notice then "bg-indigo-50 border-indigo-400 text-indigo-700"
@@ -107,10 +150,24 @@
           Double-click words to look up definitions
         </div>
       </div>
+<<<<<<< HEAD
+    
+      <!-- Save Settings Button -->
+     <%= link_to "My Vocabulary", vocabularies_path, class: "inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition" %> <br>
+     <%= link_to "My Notes", user_notes_path(current_user), class: "inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition" %> <br>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition" %>
+      <button id="save-settings" class="mt-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm transition">
+        Save Settings
+      </button>
+=======
+>>>>>>> 2384c04dbdf04b7e7a992fb3fa831ad090206763
     </div>
     <% end %>
     <div class="flex-1 <%= 'pl-64' if user_signed_in? %>"> <!-- padding-left matches sidebar width -->
       <div class="h-full overflow-y-auto">
+        
+        
+        
         <%= yield %>
       </div>
     </div>
