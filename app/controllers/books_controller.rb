@@ -8,18 +8,12 @@ class BooksController < ApplicationController
 
     def show
         @book = Book.find(params[:id])
-        @progress = @book.progress_percentage(current_user)
-        @current_location = @book.current_location
-        # @last_read_at = @book.last_read_at(current_user)
-        # if user_signed_in?
-        # @progress = current_user.reading_progresses.find_by(book: @book)
-        #     if @progress&.current_chapter
-        #         redirect_to book_chapter_path(@book, @progress.current_chapter)
-        #         return
-        #     end
-        # end
-        
-        # redirect_to book_chapter_path(@book, @book.chapters.first)
+        @progress = current_user.reading_progresses.find_by(book: @book)
+            # Find the chapter to resume (either by progress or first chapter)
+            if @progress&.current_location.present?
+                @resume_chapter = @book.chapters.find_by(position: @progress.current_location)
+            end
+        @current_chapter = @resume_chapter || @book.chapters.order(:position).first
     end
     
     def search_form; end
@@ -38,6 +32,12 @@ class BooksController < ApplicationController
 
     def create
         gutendex_id = params.dig(:book, :gutendex_id)
+        
+        # Check if book already exists in user's library
+        if current_user.books.exists?(gutendex_id: gutendex_id)
+            redirect_to search_form_books_path, alert: "Book is already in your library"
+            return
+        end
 
         response = GutendexApi.get_book_by_id(gutendex_id)
 
@@ -47,14 +47,15 @@ class BooksController < ApplicationController
             cover_url = book_data.dig("formats", "image/jpeg")
             content = fetch_book_content(download_url)
 
-            book = current_user.books.find_or_create_by!(gutendex_id: gutendex_id) do |book|
-            book.title = book_data["title"]
-            book.author = book_data["authors"]&.map { |a| a["name"] }&.join(", ")
-            book.description = book_data["summaries"]&.first
-            book.download_url = download_url
-            book.content = content
-            book.cover_url = cover_url
-            end
+            book = current_user.books.create!(
+            gutendex_id: gutendex_id,
+            title: book_data["title"],
+            author: book_data["authors"]&.map { |a| a["name"] }&.join(", "),
+            description: book_data["summaries"]&.first,
+            download_url: download_url,
+            content: content,
+            cover_url: cover_url
+            )
 
             redirect_to books_path, notice: "Book added to your library!"
         else
@@ -62,7 +63,12 @@ class BooksController < ApplicationController
         end
     end
 
-    # app/controllers/books_controller.rb
+    def destroy
+        @book = current_user.books.find(params[:id])
+        @book.destroy
+        redirect_to books_path, notice: "Book was successfully removed from your library."
+    end
+
     def download
         book = Book.find(params[:id])
         # Fetch the file from the external URL
@@ -92,4 +98,9 @@ class BooksController < ApplicationController
     redirect_to root_path, alert: "That record doesn't exist!"
   end
 
+
+    def set_current_location(current_location)
+         @chapter = @book.chapters.all
+         @current_location = current_location
+    end
 end

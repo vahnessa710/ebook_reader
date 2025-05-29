@@ -68,6 +68,43 @@
 </script>
 
 
+    <% flash.each do |type, message| %>
+  <% alert_class = case type.to_sym
+                   when :notice then "bg-indigo-50 border-indigo-400 text-indigo-700"
+                   when :alert, :error then "bg-red-50 border-red-400 text-red-700"
+                   when :success then "bg-green-50 border-green-400 text-green-700"
+                   else "bg-gray-50 border-gray-400 text-gray-700"
+                   end %>
+  
+  <div class="flash-msg fixed top-4 right-4 z-50" data-controller="flash">
+    <div class="<%= alert_class %> border-l-4 p-4 rounded-md shadow-sm max-w-xs sm:max-w-sm md:max-w-md">
+      <div class="flex items-start">
+        <% if type.to_sym == :notice %>
+          <svg class="h-5 w-5 text-indigo-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd"/>
+          </svg>
+        <% elsif [:alert, :error].include?(type.to_sym) %>
+          <svg class="h-5 w-5 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+          </svg>
+        <% elsif type.to_sym == :success %>
+          <svg class="h-5 w-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+        <% end %>
+        <div class="flex-1">
+          <p class="text-sm font-medium"><%= message %></p>
+        </div>
+        <button type="button" class="ml-4 -mr-2 p-1 rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-400" data-action="click->flash#dismiss" data-flash-target="closeButton">
+          <span class="sr-only">Dismiss</span>
+          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+<% end %>
     <div>
       <!-- New Settings Sidebar - Wrapped in conditional -->
       <% if user_signed_in? %>
@@ -113,6 +150,7 @@
           Double-click words to look up definitions
         </div>
       </div>
+<<<<<<< HEAD
     
       <!-- Save Settings Button -->
      <%= link_to "My Vocabulary", vocabularies_path, class: "inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition" %> <br>
@@ -121,9 +159,11 @@
       <button id="save-settings" class="mt-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm transition">
         Save Settings
       </button>
+=======
+>>>>>>> 2384c04dbdf04b7e7a992fb3fa831ad090206763
     </div>
     <% end %>
-    <div class="flex-1 pl-64"> <!-- padding-left matches sidebar width -->
+    <div class="flex-1 <%= 'pl-64' if user_signed_in? %>"> <!-- padding-left matches sidebar width -->
       <div class="h-full overflow-y-auto">
         
         
@@ -134,55 +174,3 @@
     </div>
   </body>
 </html>
-
-<!-- JavaScript for Settings -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Theme Toggle
-  document.querySelectorAll('.theme-toggle').forEach(button => {
-    button.addEventListener('click', function() {
-      const theme = this.dataset.theme;
-      document.documentElement.classList.toggle('dark', theme === 'dark');
-      localStorage.setItem('theme', theme);
-    });
-  });
-
-  // Font Selector
-  const fontSelector = document.getElementById('font-selector');
-  fontSelector.addEventListener('change', function() {
-    document.body.style.fontFamily = this.value === 'serif' ? 'Georgia, serif' : 
-                                    this.value === 'mono' ? 'Courier, monospace' : 
-                                    'system-ui, sans-serif';
-  });
-
-  // Font Size
-  const fontSize = document.getElementById('font-size');
-  fontSize.addEventListener('input', function() {
-    document.documentElement.style.fontSize = `${this.value}px`;
-  });
-
-  // Dictionary Selector
-  document.getElementById('dictionary-selector').addEventListener('change', function() {
-    console.log(`Dictionary set to: ${this.value}`);
-  });
-
-  // Save Settings
-  document.getElementById('save-settings').addEventListener('click', function() {
-    // Implement settings save logic (AJAX call to backend)
-    alert('Settings saved!');
-  });
-
-  // Double-click word lookup
-  document.addEventListener('dblclick', function(e) {
-    if (e.target.tagName === 'P' || e.target.tagName === 'SPAN' || e.target.tagName === 'DIV') {
-      const word = window.getSelection().toString().trim();
-      if (word.length > 0) {
-        const dict = document.getElementById('dictionary-selector').value;
-        console.log(`Looking up "${word}" in ${dict} dictionary`);
-        // Implement actual dictionary API call here
-       const response = WebsterApi.get_definition(word)
-      }
-    }
-  });
-});
-</script>
