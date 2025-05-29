@@ -1,4 +1,6 @@
 class VocabulariesController < ApplicationController
+  before_action :authenticate_user!
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
     def index
       @vocabularies = current_user.vocabularies.order(created_at: :asc)
@@ -70,5 +72,10 @@ class VocabulariesController < ApplicationController
     def Vocabulary_params
         params.require(:Vocabulary).permit(:Vocabulary, :meaning)
     end
+
+    def record_not_found
+      redirect_to  vocabularies_path, alert: "That record doesn't exist!"
+    end
+
     
 end
