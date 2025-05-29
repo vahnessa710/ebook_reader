@@ -107,11 +107,6 @@
           Double-click words to look up definitions
         </div>
       </div>
-      
-      <!-- Save Settings Button -->
-      <!-- <button id="save-settings" class="mt-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm transition">
-        Save Settings
-      </button> -->
     </div>
     <% end %>
     <div class="flex-1 <%= 'pl-64' if user_signed_in? %>"> <!-- padding-left matches sidebar width -->
@@ -122,55 +117,3 @@
     </div>
   </body>
 </html>
-
-<!-- JavaScript for Settings -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Theme Toggle
-  document.querySelectorAll('.theme-toggle').forEach(button => {
-    button.addEventListener('click', function() {
-      const theme = this.dataset.theme;
-      document.documentElement.classList.toggle('dark', theme === 'dark');
-      localStorage.setItem('theme', theme);
-    });
-  });
-
-  // Font Selector
-  const fontSelector = document.getElementById('font-selector');
-  fontSelector.addEventListener('change', function() {
-    document.body.style.fontFamily = this.value === 'serif' ? 'Georgia, serif' : 
-                                    this.value === 'mono' ? 'Courier, monospace' : 
-                                    'system-ui, sans-serif';
-  });
-
-  // Font Size
-  const fontSize = document.getElementById('font-size');
-  fontSize.addEventListener('input', function() {
-    document.documentElement.style.fontSize = `${this.value}px`;
-  });
-
-  // Dictionary Selector
-  document.getElementById('dictionary-selector').addEventListener('change', function() {
-    console.log(`Dictionary set to: ${this.value}`);
-  });
-
-  // Save Settings
-  document.getElementById('save-settings').addEventListener('click', function() {
-    // Implement settings save logic (AJAX call to backend)
-    alert('Settings saved!');
-  });
-
-  // Double-click word lookup
-  document.addEventListener('dblclick', function(e) {
-    if (e.target.tagName === 'P' || e.target.tagName === 'SPAN' || e.target.tagName === 'DIV') {
-      const word = window.getSelection().toString().trim();
-      if (word.length > 0) {
-        const dict = document.getElementById('dictionary-selector').value;
-        console.log(`Looking up "${word}" in ${dict} dictionary`);
-        // Implement actual dictionary API call here
-       const response = WebsterApi.get_definition(word)
-      }
-    }
-  });
-});
-</script>
