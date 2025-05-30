@@ -34,9 +34,9 @@ Rails.application.routes.draw do
       root to: "books#index", as: :authenticated_root
     end
 
-    devise_scope :user do
-      unauthenticated do
-        root to: "devise/sessions#new", as: :unauthenticated_root
-      end
+  devise_scope :user do
+    unauthenticated do
+      root to: "devise/sessions#new", as: :unauthenticated_root
     end
+  end
 end

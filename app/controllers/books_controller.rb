@@ -1,14 +1,12 @@
 class BooksController < ApplicationController
-    before_action :authenticate_user!
-
+    before_action :set_book_id, only: %i[show destroy download]
+    
     def index
         @books = current_user.books.all
     end
 
     def show
-        @book = Book.find(params[:id])
         @progress = current_user.reading_progresses.find_by(book: @book)
-            # Find the chapter to resume (either by progress or first chapter)
             if @progress&.current_location.present?
                 @resume_chapter = @book.chapters.find_by(position: @progress.current_location)
             end
@@ -63,18 +61,16 @@ class BooksController < ApplicationController
     end
 
     def destroy
-        @book = current_user.books.find(params[:id])
         @book.destroy
         redirect_to books_path, notice: "Book was successfully removed from your library."
     end
 
     def download
-        book = Book.find(params[:id])
         # Fetch the file from the external URL
-        response = HTTParty.get(book.download_url)
+        response = HTTParty.get(@book.download_url)
         
         send_data response.body,
-                    filename: "#{book.title.parameterize}.epub", # or .pdf, etc.
+                    filename: "#{@book.title.parameterize}.epub", # or .pdf, etc.
                     type: response.content_type,
                     disposition: 'attachment'
     end
@@ -82,17 +78,12 @@ class BooksController < ApplicationController
     private
 
     def set_book_id
-        @book = User.books.find(params[:id])
+        @book = current_user.books.find(params[:id])
     end
 
     def fetch_book_content(download_url)
         return nil unless download_url
         response = HTTParty.get(download_url)
         response.success? ? response.body : nil
-    end
-
-    def set_current_location(current_location)
-         @chapter = @book.chapters.all
-         @current_location = current_location
     end
 end
