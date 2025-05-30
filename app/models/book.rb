@@ -22,9 +22,9 @@ class Book < ApplicationRecord
         current_location = progress&.current_location
     end
 
-    #  def last_read_at(user)
-    #     book.reading_progresses&.last_read_at
-    # end
+    def last_read_at_for(user)
+        reading_progresses.find_by(user: user)&.last_read_at
+    end
 
     private
 

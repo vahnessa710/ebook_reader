@@ -3,7 +3,7 @@ class VocabulariesController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
     def index
-      @vocabularies = current_user.vocabularies.order(created_at: :asc)
+      @vocabularies = current_user.vocabularies.order(created_at: :desc)
     end
 
     def search_form;  end

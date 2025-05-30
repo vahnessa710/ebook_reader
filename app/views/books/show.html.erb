@@ -104,8 +104,9 @@
             <div class="pt-4 border-t border-gray-200">
               <h4 class="text-sm font-medium text-gray-900 mb-2">Last Read</h4>
               <p class="text-sm text-gray-500">
-                <% if @book.progress_percentage > 0 %>
-                   <%= @book.last_read_at(current_user)&.strftime("%B %d, %Y") || "Recently" %>
+                <% if @book.progress_percentage(current_user) > 0 %>
+                  <% last_read = @book.last_read_at_for(current_user) %>
+                  <%= last_read ? last_read.strftime("%B %d, %Y") : "Recently" %>
                 <% else %>
                   Not started
                 <% end %>
