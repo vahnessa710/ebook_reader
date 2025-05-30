@@ -86,6 +86,14 @@ production:
     username: <%= ENV['PG_USERNAME'] %>
     password: <%= ENV['PG_PASSWORD'] %>
     port: <%= ENV['PG_PORT'] || 5432 %>
+  cache:
+    <<: *primary_production
+    database: <%= ENV['DATABASE_NAME'] %>_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: <%= ENV['DATABASE_NAME'] %>_queue
+    migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
     database: <%= ENV['DATABASE_NAME'] %>_cable
