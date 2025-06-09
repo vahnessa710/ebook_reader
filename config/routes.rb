@@ -28,6 +28,12 @@ Rails.application.routes.draw do
     resources :notes
   end
 
+  resources :users do
+    member do
+      patch :update_theme
+    end
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
 
   authenticated :user do

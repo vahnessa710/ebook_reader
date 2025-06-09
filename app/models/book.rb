@@ -33,20 +33,4 @@ class Book < ApplicationRecord
         parsed_text = ActionView::Base.full_sanitizer.sanitize(raw_content)
         ChapterParser.new(self, parsed_text).parse
     end
-
-    # def find_or_create_book(book_id)
-    #     book_data = response.parsed_response
-    #     download_url = book_data.dig("formats", "text/plain; charset=utf-8") || book_data.dig("formats", "text/plain; charset=us-ascii")
-    #     cover_url = book_data.dig("formats", "image/jpeg")
-    #     content = fetch_book_content(download_url)
-
-    #     book = current_user.books.find_or_create_by!(gutendex_id: gutendex_id) do |book|
-    #             book.title = book_data["title"]
-    #             book.author = book_data["authors"]&.map { |a| a["name"] }&.join(", ")
-    #             book.description = book_data["summaries"]&.first
-    #             book.download_url = download_url
-    #             book.content = content
-    #             book.cover_url = cover_url
-    #     end
-    # end
 end

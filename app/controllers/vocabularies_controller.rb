@@ -74,7 +74,7 @@ class VocabulariesController < ApplicationController
     end
 
     def record_not_found
-      redirect_to  vocabularies_path, alert: "That record doesn't exist!"
+      redirect_to vocabularies_path, alert: "That record doesn't exist!"
     end
 
     

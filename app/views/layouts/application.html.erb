@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang = "en" class="<%= 'dark' if user_signed_in? && current_user.dark_theme? %>">
   <head>
-    <title><%= content_for(:title) || "Ebook Project" %></title>
+    <title><%= content_for(:title) || "Blyss" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -18,21 +18,30 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-  
-   
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+  
     <%= javascript_importmap_tags %>
+    
   </head>
 
   <body>
+    <% if user_signed_in? %>
+      <script>
+        window.currentUser = {
+          id: <%= current_user.id %>,
+          theme: <%= current_user.theme || 0 %>
+        };
+      </script>
+    <% end %>
+    
     <% flash.each do |type, message| %>
-  <% alert_class = case type.to_sym
-                   when :notice then "bg-indigo-50 border-indigo-400 text-indigo-700"
-                   when :alert, :error then "bg-red-50 border-red-400 text-red-700"
-                   when :success then "bg-green-50 border-green-400 text-green-700"
-                   else "bg-gray-50 border-gray-400 text-gray-700"
-                   end %>
+      <% alert_class = case type.to_sym
+                      when :notice then "bg-indigo-50 border-indigo-400 text-indigo-700"
+                      when :alert, :error then "bg-red-50 border-red-400 text-red-700"
+                      when :success then "bg-green-50 border-green-400 text-green-700"
+                      else "bg-gray-50 border-gray-400 text-gray-700"
+                      end %>
   
   <div class="flash-msg fixed top-4 right-4 z-50" data-controller="flash">
     <div class="<%= alert_class %> border-l-4 p-4 rounded-md shadow-sm max-w-xs sm:max-w-sm md:max-w-md">
@@ -66,22 +75,22 @@
     <div>
       <!-- New Settings Sidebar - Wrapped in conditional -->
       <% if user_signed_in? %>
-        <div class="w-64 fixed inset-y-0 left-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col p-5">
+        <div class="w-64 fixed inset-y-0 left-0 bg-white dark:bg-gray-900 border-r border-gray-500 dark:border-gray-700 flex flex-col p-5">
           <h2 class="font-bold text-lg mb-4 text-gray-700 dark:text-gray-200">Reading Settings</h2>
         
       <!-- Theme Selector -->
       <div class="mb-6">
         <h3 class="text-sm font-medium mb-2 text-gray-600 dark:text-gray-400">Theme</h3>
-        <div class="flex space-x-2">
+        <div class="flex space-x-2" data-controller="theme"
+      data-theme-initial-theme-value="<%= user_signed_in? ? current_user.theme_name.to_s : '' %>">
           <%= button_tag "Light", 
               class: "theme-toggle px-3 py-1 rounded text-sm",
-              data: { theme: "light" } %>
+              data: { theme: "light", action: "click->theme#toggle", theme_target: "themeToggle" } %>
           <%= button_tag "Dark", 
-              class: "theme-toggle px-3 py-1 rounded text-sm #{current_user.theme == 'dark' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}",
-              data: { theme: "dark" } %>
+              class: "theme-toggle px-3 py-1 rounded text-sm",
+              data: { theme: "dark", action: "click->theme#toggle", theme_target: "themeToggle" } %>
         </div>
       </div>
-    
       <!-- Typography -->
       <div class="mb-6">
         <h3 class="text-sm font-medium mb-2 text-gray-600 dark:text-gray-400">Typography</h3>

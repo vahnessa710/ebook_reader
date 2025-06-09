@@ -22,7 +22,6 @@ class ChapterParser
   end
 
   def parse
-    # Normalize line endings and split into lines
     lines = @text.gsub(/\r\n?/, "\n").split(/\n/)
     
     chapters = []
@@ -41,11 +40,9 @@ class ChapterParser
         current_chapter[:content] << line
       end
     end
-    
-    # Add the final chapter
+
     chapters << current_chapter if current_chapter[:content].any?
     
-    # Create chapters in the database
     chapters.each_with_index do |chapter, index|
       @book.chapters.create!(
         title: chapter[:title],

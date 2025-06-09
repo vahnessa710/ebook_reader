@@ -30,7 +30,6 @@ class BooksController < ApplicationController
     def create
         gutendex_id = params.dig(:book, :gutendex_id)
         
-        # Check if book already exists in user's library
         if current_user.books.exists?(gutendex_id: gutendex_id)
             redirect_to search_form_books_path, alert: "Book is already in your library"
             return
@@ -66,11 +65,10 @@ class BooksController < ApplicationController
     end
 
     def download
-        # Fetch the file from the external URL
         response = HTTParty.get(@book.download_url)
         
         send_data response.body,
-                    filename: "#{@book.title.parameterize}.epub", # or .pdf, etc.
+                    filename: "#{@book.title.parameterize}.epub",
                     type: response.content_type,
                     disposition: 'attachment'
     end
