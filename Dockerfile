@@ -52,7 +52,7 @@ RUN npm install
 COPY . .
 
 # Run Tailwind build script (this generates application.css)
-RUN npm run build:css
+RUN npm run build-css
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
