@@ -19,13 +19,11 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
-  
     <%= javascript_importmap_tags %>
     
   </head>
 
-  <body>
+  <body data-controller="typography">
     <% if user_signed_in? %>
       <script>
         window.currentUser = {
@@ -75,7 +73,7 @@
     <div>
       <!-- New Settings Sidebar - Wrapped in conditional -->
       <% if user_signed_in? %>
-        <div class="w-64 fixed inset-y-0 left-0 bg-white dark:bg-gray-900 border-r border-gray-500 dark:border-gray-700 flex flex-col p-5">
+        <div class="w-64 fixed inset-y-0 left-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col p-5">
           <h2 class="font-bold text-lg mb-4 text-gray-700 dark:text-gray-200">Reading Settings</h2>
         
       <!-- Theme Selector -->
@@ -91,19 +89,31 @@
               data: { theme: "dark", action: "click->theme#toggle", theme_target: "themeToggle" } %>
         </div>
       </div>
-      <!-- Typography -->
-      <div class="mb-6">
-        <h3 class="text-sm font-medium mb-2 text-gray-600 dark:text-gray-400">Typography</h3>
-        <select id="font-selector" class="w-full p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm">
-          <option value="sans">Sans-serif (Modern)</option>
-          <option value="serif">Serif (Traditional)</option>
-          <option value="mono">Monospace (Code)</option>
-        </select>
-        <div class="mt-2 flex items-center">
-          <span class="text-sm text-gray-500 dark:text-gray-400 mr-2">Size</span>
-          <input type="range" id="font-size" min="12" max="24" value="16" class="w-full">
-        </div>
-      </div>
+<!-- Typography Controls -->
+<div class="mb-6">
+  <h3 class="text-sm font-medium mb-2 text-gray-600 dark:text-gray-400">Typography</h3>
+  
+  <!-- Font Family Selector -->
+  <select id="font-family-selector" 
+          class="w-full p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm mb-3"
+          data-action="change->typography#changeFontFamily">
+    <option value="font-sans">Sans-serif (Inter)</option>
+    <option value="font-serif">Serif (Noto Serif)</option>
+    <option value="font-mono">Monospace (Fira Code)</option>
+  </select>
+  
+  <!-- Font Size Selector -->
+  <select id="font-size-selector"
+          class="w-full p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm"
+          data-action="change->typography#changeFontSize">
+    <option value="text-xs">Extra Small (xs)</option>
+    <option value="text-sm">Small (sm)</option>
+    <option value="text-base">Base (default)</option>
+    <option value="text-lg">Large (lg)</option>
+    <option value="text-xl">Extra Large (xl)</option>
+    <option value="text-2xl">2XL</option>
+  </select>
+</div>
 
       <!-- Bookshelf -->
       <%= link_to books_path, class: "w-full text-left px-4 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 flex items-center" do %>
