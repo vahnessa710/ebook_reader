@@ -69,13 +69,38 @@
         <h1 class="font-bold text-2xl text-gray-900 dark:text-white"><%= @chapter.title %></h1>
         <p class="text-sm text-gray-500 dark:text-gray-400">Chapter <%= @chapter.position %> of <%= @book.chapters.count %></p>
       </div>
-      <div class="flex space-x-3">
-        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 dark:hover:bg-gray-700' transition-colors">
+      <div class="flex space-x-3" data-controller="chapter-search" data-chapter-search-target="content">
+  <div x-data="{ searchOpen: false }" class="relative">
+  <button @click="searchOpen = !searchOpen" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+  </button>
+
+  <!-- Search Modal -->
+  <div x-show="searchOpen" @click.away="searchOpen = false" 
+       class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-20">
+    <div class="p-4">
+      <div class="relative">
+        <input type="text" 
+               data-chapter-search-target="input"
+               data-action="input->chapter-search#search keyup->chapter-search#search"
+               class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:text-white" 
+               placeholder="Search in this chapter...">
+        <div class="absolute left-3 top-2.5 text-gray-400 dark:text-gray-500">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-        </button>
+        </div>
+      </div>
+
+      <div id="search_results" data-chapter-search-target="results" class="hidden mt-4 max-h-60 overflow-y-auto">
+        <%= render 'search_results' if @search_results.present? || (@search_term.present? && @search_results.blank?) %>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Notes Button -->
         <%= link_to new_user_note_path(current_user), class: "p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" do %> 
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -86,7 +111,7 @@
     
     <!-- Chapter Content -->
     <div class="px-8 py-8 max-w-3xl mx-auto dark:bg-gray-800">
-      <div class="text-gray-700 dark:text-gray-300 max-w-none" id="content" data-typography-target="content">
+      <div class="text-gray-700 dark:text-gray-300 max-w-none" id="content" data-typography-target="content" data-chapter-search-target="content">
         <%= raw @chapter.content %>
       </div>
       
