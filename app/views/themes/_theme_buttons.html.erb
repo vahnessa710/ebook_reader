@@ -1,0 +1,13 @@
+<div class="space-x-2" id="theme-toggle">
+  <%= button_to 'Light Mode',
+                set_theme_users_path(theme: 'light'),
+                method: :patch,
+                form: { data: { turbo_stream: true } },
+                class: "px-4 py-2 text-sm font-medium bg-white text-gray-800 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" %>
+
+  <%= button_to 'Dark Mode',
+                set_theme_users_path(theme: 'dark'),
+                method: :patch,
+                form: { data: { turbo_stream: true } },
+                class: "px-4 py-2 text-sm font-medium bg-gray-800 text-white border border-gray-600 rounded dark:bg-gray-900 dark:text-white" %>
+</div>

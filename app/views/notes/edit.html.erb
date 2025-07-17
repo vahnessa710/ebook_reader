@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="flex h-screen bg-gray-50 dark:bg-gray-900">
   <!-- Main Content -->
   <div class="flex-1 overflow-y-auto p-6 sm:p-8">
@@ -35,3 +36,76 @@
 <% end %>
 
 <%= link_to 'Back to Notes', user_notes_path(@user) %>
+=======
+<div class="flex h-screen bg-gray-50 dark:bg-gray-900">
+  <!-- Main Content -->
+  <div class="flex-1 overflow-y-auto p-6 sm:p-8">
+    <div class="max-w-2xl mx-auto">
+      <!-- Header with back button -->
+      <div class="flex items-center mb-6">
+        <%= link_to user_notes_path(@user), class: "mr-4 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        <% end %>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Edit Note</h1>
+      </div>
+
+      <!-- Form Card -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 sm:p-8">
+        <%= form_with model: [@user, @note], local: true do |form| %>
+          <!-- Title Field -->
+          <div class="mb-6">
+            <%= form.label :title, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+            <div class="relative">
+              <%= form.text_field :title, class: "block w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition", placeholder: "Note title" %>
+
+              <% if @note.errors[:title].any? %>
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              <% end %>
+            </div>
+
+            <% if @note.errors[:title].any? %>
+              <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                <%= @note.errors[:title].first %>
+              </p>
+            <% end %>
+          </div>
+
+          <!-- Body Field -->
+          <div class="mb-8">
+            <%= form.label :body, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+            <div class="relative">
+              <%= form.text_area :body, rows: 8, class: "block w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition", placeholder: "Write your note here..." %>
+
+              <% if @note.errors[:body].any? %>
+                <div class="absolute top-3 right-3 pr-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              <% end %>
+            </div>
+
+            <% if @note.errors[:body].any? %>
+              <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                <%= @note.errors[:body].first %>
+              </p>
+            <% end %>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex justify-end space-x-3">
+            <%= link_to "Cancel", user_notes_path(@user), class: "cursor-pointer px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition" %>
+            <%= form.submit "Update Note", class: "cursor-pointer px-6 py-2.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+>>>>>>> origin/book_branch_2

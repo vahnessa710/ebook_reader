@@ -3,7 +3,15 @@
 one:
   title: MyString
   body: MyText
+<<<<<<< HEAD
+=======
+  user: one
+>>>>>>> origin/book_branch_2
 
 two:
   title: MyString
   body: MyText
+<<<<<<< HEAD
+=======
+  user: two
+>>>>>>> origin/book_branch_2

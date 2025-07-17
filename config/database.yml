@@ -81,18 +81,20 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: ebook_project_production
-    username: ebook_project
-    password: <%= ENV["EBOOK_PROJECT_DATABASE_PASSWORD"] %>
+    host: <%= ENV['PG_HOST'] %>
+    database: <%= ENV['DATABASE_NAME'] %>
+    username: <%= ENV['PG_USERNAME'] %>
+    password: <%= ENV['PG_PASSWORD'] %>
+    port: <%= ENV['PG_PORT'] || 5432 %>
   cache:
     <<: *primary_production
-    database: ebook_project_production_cache
+    database: <%= ENV['DATABASE_NAME'] %>_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: ebook_project_production_queue
+    database: <%= ENV['DATABASE_NAME'] %>_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: ebook_project_production_cable
+    database: <%= ENV['DATABASE_NAME'] %>_cable
     migrations_paths: db/cable_migrate

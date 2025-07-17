@@ -1,7 +1,7 @@
 class Chapter < ApplicationRecord
   belongs_to :book
   has_many :reading_progresses, dependent: :destroy
-
+  
   # Default scope to always order chapters by position
   default_scope { order(position: :asc) }
 
