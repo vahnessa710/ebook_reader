@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build-css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
-    "watch-css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --watch"
+    "watch-css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --watch",
+    "postinstall": "update-browserslist-db --error"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.8"
+    "@tailwindcss/postcss": "^4.1.8",
+    "update-browserslist-db": "^1.1.3"
   }
 }
