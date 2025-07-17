@@ -19,7 +19,6 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>
@@ -142,9 +141,6 @@
     <% end %>
     <div class="flex-1 <%= 'pl-64' if user_signed_in? %>"> <!-- padding-left matches sidebar width -->
       <div class="h-full overflow-y-auto">
-        
-        
-        
         <%= yield %>
       </div>
     </div>
