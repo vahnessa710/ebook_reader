@@ -3,7 +3,7 @@
     <%= pluralize(@search_results.size, 'result') %> found
   </div>
   <% @search_results.each do |result| %>
-    <div class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer text-sm" 
+    <div class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer dark:text-gray-400 text-sm" 
          data-action="click->chapter-search#highlightAndScroll"
          data-text="<%= result.strip %>">
       <%= highlight(result.strip, @search_term) %>

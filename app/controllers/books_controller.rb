@@ -7,9 +7,9 @@ class BooksController < ApplicationController
 
     def show
         @progress = current_user.reading_progresses.find_by(book: @book)
-            if @progress&.current_location.present?
-                @resume_chapter = @book.chapters.find_by(position: @progress.current_location)
-            end
+        if @progress&.current_location.present?
+            @resume_chapter = @book.chapters.find_by(position: @progress.current_location)
+        end
         @current_chapter = @resume_chapter || @book.chapters.order(:position).first
     end
     

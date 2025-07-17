@@ -101,13 +101,13 @@
   </div>
 </div>
   <!-- Notes Button -->
-        <%= link_to new_user_note_path(current_user), class: "p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" do %> 
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-        <% end %>
-      </div>
+      <%= link_to new_user_note_path(current_user), class: "p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+      <% end %>
     </div>
+  </div>
     
     <!-- Chapter Content -->
     <div class="px-8 py-8 max-w-3xl mx-auto dark:bg-gray-800">
