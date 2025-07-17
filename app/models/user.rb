@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-class User < ApplicationRecord
-  
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :confirmable 
-
-  has_many :books
-  has_many :vocabularies, dependent: :destroy 
-  has_many :reading_progresses
-  has_many :notes, dependent: :destroy
-
-
-end
-=======
 class User < ApplicationRecord
   
   # Include default devise modules. Others available are:
@@ -38,4 +23,3 @@ class User < ApplicationRecord
     theme == THEMES[:dark]
   end
 end
->>>>>>> origin/book_branch_2
