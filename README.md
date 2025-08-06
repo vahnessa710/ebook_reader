@@ -15,7 +15,6 @@ A Ruby on Rails application that allows authenticated users to search, read, and
 📌 Note
 
 > ✅ The complete and functional version of this application is located in the `book_branch_2` branch.  
-> [Click here to view the branch directly](https://github.com/vahnessa710/ebook_reader/tree/book_branch_2)![Blyss_login](https://github.com/user-attachments/assets/414c7da3-3f5e-47e8-b5ae-7781ed5c651b)
 
 ![2](https://github.com/user-attachments/assets/50e46be8-63e1-415a-9c07-e1eb59a06b71)
 ![Screenshot 2025-07-01 020244](https://github.com/user-attachments/assets/ff620b57-c72d-4eb0-a83f-e89163970e5e)
