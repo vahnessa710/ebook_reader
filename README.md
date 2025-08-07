@@ -12,9 +12,5 @@ A Ruby on Rails application that allows authenticated users to search, read, and
 - **Gutendex and Free Dictionary API** (External Data)
 - **Tailwind CSS** (Styling)
 
-📌 Note
-
-> ✅ The complete and functional version of this application is located in the `book_branch_2` branch.  
-
 ![2](https://github.com/user-attachments/assets/50e46be8-63e1-415a-9c07-e1eb59a06b71)
 ![Screenshot 2025-07-01 020244](https://github.com/user-attachments/assets/ff620b57-c72d-4eb0-a83f-e89163970e5e)
